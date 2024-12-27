@@ -4,7 +4,7 @@ import Avatar from "./Avatar";
 
 function OnlineUsers() {
   const { documents } = useCollection("users");
-  console.log(documents);
+
   return (
     <div className=" bg-slate-800 h-screen p-10 rounded-tl-2xl rounded-bl-2xl  text-white">
       <div className="w-[150px]">
