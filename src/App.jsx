@@ -27,7 +27,9 @@ import { login, authReadyAct } from "./app/features/userSlice";
 
 function App() {
   const dispatch = useDispatch();
+
   const { user, authReady } = useSelector((store) => store.user);
+  console.log(user);
 
   const routes = createBrowserRouter([
     {
