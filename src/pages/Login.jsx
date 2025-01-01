@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import FormInput from "../components/FormInput";
 import { Form, Link, useActionData } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
+import { useSelector } from "react-redux";
 
 // action
 export const action = async ({ request }) => {
@@ -13,6 +14,7 @@ export const action = async ({ request }) => {
 };
 
 function Login() {
+  const { isPending } = useSelector((store) => store.user);
   const { loginWithEmailAndPassword } = useLogin();
   const data = useActionData();
   useEffect(() => {
@@ -39,9 +41,16 @@ function Login() {
         />
 
         <div className="my-5">
-          <button className="btn btn-success text-white btn-block">
-            Register
-          </button>
+          {!isPending && (
+            <button className="btn btn-success text-white btn-block">
+              Login
+            </button>
+          )}
+          {isPending && (
+            <button className="btn btn-success text-white btn-block" disabled>
+              Loading...
+            </button>
+          )}
         </div>
         <p className="text-center text-x italic opacity-70">
           if you don't have a accaunt ,

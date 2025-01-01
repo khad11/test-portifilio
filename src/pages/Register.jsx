@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import FormInput from "../components/FormInput";
 import { Link, useActionData, Form } from "react-router-dom";
 import { useRegister } from "../hooks/useRegister";
+import { useSelector } from "react-redux";
 
 // action
 export const action = async ({ request }) => {
@@ -13,6 +14,7 @@ export const action = async ({ request }) => {
 };
 
 function Register() {
+  const { isPending } = useSelector((store) => store.user);
   const { registerWithEmailAndPassword } = useRegister();
   const data = useActionData();
   useEffect(() => {
@@ -51,9 +53,16 @@ function Register() {
           name="repeadPassword"
         />
         <div className="my-5">
-          <button className="btn btn-success text-white btn-block">
-            Register
-          </button>
+          {!isPending && (
+            <button className="btn btn-success text-white btn-block">
+              Register
+            </button>
+          )}
+          {isPending && (
+            <button className="btn btn-success text-white btn-block" disabled>
+              Loading...
+            </button>
+          )}
         </div>
         <p className="text-center text-x italic opacity-70">
           if you have a accaunt ,{" "}

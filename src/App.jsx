@@ -19,6 +19,7 @@ import Create from "./pages/Create";
 // actions
 import { action as LoginAction } from "./pages/Login";
 import { action as RegisterAction } from "./pages/Register";
+import { action as CreateAction } from "./pages/Create";
 
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
@@ -29,7 +30,6 @@ function App() {
   const dispatch = useDispatch();
 
   const { user, authReady } = useSelector((store) => store.user);
-  console.log(user);
 
   const routes = createBrowserRouter([
     {
@@ -47,6 +47,7 @@ function App() {
         {
           path: "/create",
           element: <Create />,
+          action: CreateAction,
         },
       ],
     },
