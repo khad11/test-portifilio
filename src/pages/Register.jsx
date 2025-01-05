@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import FormInput from "../components/FormInput";
 import { Link, useActionData, Form } from "react-router-dom";
 import { useRegister } from "../hooks/useRegister";
 import { useSelector } from "react-redux";
+
+import { validateSignupOrLoginData } from "../utils";
+import Button from "../components/Button";
 
 // action
 export const action = async ({ request }) => {
@@ -10,18 +13,36 @@ export const action = async ({ request }) => {
   const displayName = form.get("name");
   const email = form.get("email");
   const password = form.get("password");
-  return { displayName, password, email };
+  const confirmPassword = form.get("repeadPassword");
+  return { displayName, password, email, confirmPassword };
 };
 
 function Register() {
+  const [error, setError] = useState({
+    displayName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const { isPending } = useSelector((store) => store.user);
   const { registerWithEmailAndPassword } = useRegister();
-  const data = useActionData();
+  const singupActionData = useActionData();
   useEffect(() => {
-    if (data) {
-      registerWithEmailAndPassword(data.displayName, data.email, data.password);
+    if (singupActionData) {
+      const { valid, errors } = validateSignupOrLoginData(
+        singupActionData,
+        true
+      );
+
+      if (valid) {
+        const { displayName, email, password } = singupActionData;
+        registerWithEmailAndPassword(displayName, email, password);
+      } else {
+        setError(errors);
+      }
     }
-  }, [data]);
+  }, [singupActionData]);
+
   return (
     <div className="h-screen grid place-items-center w-full bg-green-50">
       <Form method="post" className="max-w-96 mx-auto w-full ">
@@ -33,27 +54,35 @@ function Register() {
           placeholder="Name"
           label="Display Name"
           name="name"
+          error={error.displayName && "input-error"}
+          errorText={error.displayName}
         />
         <FormInput
           type="email"
           placeholder="Email"
           label="Your  Email"
           name="email"
+          error={error.email && "input-error"}
+          errorText={error.email}
         />
         <FormInput
           type="password"
           placeholder="Password"
           label="Your Pasword"
           name="password"
+          error={error.password && "input-error"}
+          errorText={error.password}
         />
         <FormInput
           type="password"
           placeholder="Password again"
           label="Your Pasword again"
           name="repeadPassword"
+          error={error.confirmPassword && "input-error"}
+          errorText={error.confirmPassword}
         />
         <div className="my-5">
-          {!isPending && (
+          {/* {!isPending && (
             <button className="btn btn-success text-white btn-block">
               Register
             </button>
@@ -62,7 +91,10 @@ function Register() {
             <button className="btn btn-success text-white btn-block" disabled>
               Loading...
             </button>
-          )}
+          )} */}
+          <Button loading={isPending} type="primary">
+            Register
+          </Button>
         </div>
         <p className="text-center text-x italic opacity-70">
           if you have a accaunt ,{" "}

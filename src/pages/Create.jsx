@@ -1,5 +1,5 @@
 import FormInput from "../components/FormInput";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useNavigate } from "react-router-dom";
 import FormTextArea from "../components/FormTextArea";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -8,6 +8,7 @@ import { useFirestore } from "../hooks/useFirestore";
 import { Timestamp } from "firebase/firestore";
 import { serverTimestamp } from "firebase/firestore";
 import toast from "react-hot-toast";
+import { useCollection } from "../hooks/useCollection";
 
 const animatedComponents = makeAnimated();
 
@@ -22,12 +23,6 @@ export async function action({ request }) {
   return { name, description, dueTo };
 }
 
-const usersOptions = [
-  { value: "user1", label: "User 1" },
-  { value: "user2", label: "User 2" },
-  { value: "user3", label: "User 3" },
-];
-
 const projectTypes = [
   { value: "smm", label: "SMM" },
   { value: "frontend", label: "Frontend" },
@@ -37,10 +32,25 @@ const projectTypes = [
 ];
 
 function Create() {
-  const { addDocument } = useFirestore();
+  const navigate = useNavigate();
+  const { addDocument, isPending, error } = useFirestore("projects");
+  const { documents } = useCollection("users");
+
   const CreateActionData = useActionData();
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [projectType, setProjectType] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    setUsers(
+      documents?.map((document) => {
+        return {
+          value: { ...document },
+          label: document.displayName,
+        };
+      })
+    );
+  }, [documents]);
 
   const selectUser = (user) => {
     setAssignedUsers(user);
@@ -57,6 +67,10 @@ function Create() {
     }
     if (!CreateActionData?.description) {
       toast.error("Project description is required!");
+      return false;
+    }
+    if (CreateActionData.description.length < 10) {
+      toast.error("Project description must be at least 10 characters!");
       return false;
     }
     if (!CreateActionData?.dueTo) {
@@ -76,12 +90,13 @@ function Create() {
 
   useEffect(() => {
     if (CreateActionData && handleValidation()) {
-      addDocument("projects", {
+      addDocument({
         ...CreateActionData,
-        assignedUsers,
-        projectType,
+        assignedUsers: assignedUsers.map((au) => au.value),
+        projectType: projectType.map((pt) => pt.value),
         createdAt: serverTimestamp(new Date()),
       });
+      navigate("/");
       toast.success("Project created successfully!");
     }
   }, [CreateActionData]);
@@ -124,19 +139,32 @@ function Create() {
           </div>
           <Select
             onChange={selectUser}
-            options={usersOptions}
+            options={users}
             isMulti
             components={animatedComponents}
           />
         </label>
-        <div className="flex justify-end">
-          <button
-            className="py-3 px-6 mt-8 bg-teal-500 text-white rounded-lg font-semibold text-lg shadow-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-400 focus:outline-none transition-all duration-300"
-            type="submit"
-          >
-            Add Project
-          </button>
-        </div>
+        {isPending && (
+          <div className="flex justify-end">
+            <button
+              className=" py-3 px-6 mt-8 bg-teal-500 text-white rounded-lg font-semibold text-lg shadow-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-400 focus:outline-none transition-all duration-300"
+              type="submit"
+              disabled
+            >
+              Loading...
+            </button>
+          </div>
+        )}
+        {!isPending && (
+          <div className="flex justify-end">
+            <button
+              className="py-3 px-6 mt-8 bg-teal-500 text-white rounded-lg font-semibold text-lg shadow-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-400 focus:outline-none transition-all duration-300"
+              type="submit"
+            >
+              Add Project
+            </button>
+          </div>
+        )}
       </Form>
     </div>
   );

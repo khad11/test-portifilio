@@ -4,7 +4,7 @@ function OnlineUsers() {
   const { documents } = useCollection("users");
 
   return (
-    <div className="bg-gradient-to-b from-slate-800 to-slate-700 min-h-screen p-10 rounded-tl-2xl rounded-bl-2xl text-white shadow-xl">
+    <div className="bg-gradient-to-b from-slate-800 to-slate-600 min-h-screen p-10 rounded-tl-2xl rounded-bl-2xl text-white shadow-xl">
       <div className="w-[240px] mx-auto">
         <h1 className="mb-8 text-center text-2xl font-bold tracking-wide">
           Online Users

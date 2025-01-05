@@ -3,6 +3,8 @@ import FormInput from "../components/FormInput";
 import { Form, Link, useActionData } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
 import { useSelector } from "react-redux";
+import { validateSignupOrLoginData } from "../utils";
+import { useState } from "react";
 
 // action
 export const action = async ({ request }) => {
@@ -14,14 +16,31 @@ export const action = async ({ request }) => {
 };
 
 function Login() {
+  const [error, setError] = useState({
+    displayName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const { isPending } = useSelector((store) => store.user);
   const { loginWithEmailAndPassword } = useLogin();
-  const data = useActionData();
+  const loginActionData = useActionData();
+
   useEffect(() => {
-    if (data) {
-      loginWithEmailAndPassword(data.email, data.password);
+    if (loginActionData) {
+      const { valid, errors } = validateSignupOrLoginData(
+        loginActionData,
+        true
+      );
+
+      if (valid) {
+        const { displayName, email, password } = loginActionData;
+        loginWithEmailAndPassword(displayName, email, password);
+      } else {
+        setError(errors);
+      }
     }
-  });
+  }, [loginActionData]);
   return (
     <div className="h-screen grid place-items-center w-full bg-green-50">
       <Form method="post" className="max-w-96 mx-auto w-full ">
@@ -32,12 +51,16 @@ function Login() {
           placeholder="Email"
           label="Your  Email"
           name="email"
+          error={error.email && "input-error"}
+          errorText={error.email}
         />
         <FormInput
           type="password"
           placeholder="Password"
           label="Your Pasword"
           name="password"
+          error={error.password && "input-error"}
+          errorText={error.password}
         />
 
         <div className="my-5">

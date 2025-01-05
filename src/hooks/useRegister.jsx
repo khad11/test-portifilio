@@ -7,6 +7,7 @@ import { login, setIsPending } from "../app/features/userSlice";
 import { v4 as uuid } from "uuid";
 import { doc, setDoc } from "firebase/firestore";
 import { getFirebaseAuthErrorMessage } from "../utils";
+import toast from "react-hot-toast";
 
 export function useRegister() {
   const dispatch = useDispatch();
