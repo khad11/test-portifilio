@@ -32,10 +32,10 @@ function useFirestore(collectionName) {
     try {
       await deleteDoc(doc(db, collectionName, id));
       toast.success("Document successfully deleted!");
+      navigate("/");
     } catch (error) {
       toast.error("Error removing document: ", error);
     } finally {
-      navigate("/");
     }
   };
 

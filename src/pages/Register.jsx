@@ -27,6 +27,7 @@ function Register() {
   const { isPending } = useSelector((store) => store.user);
   const { registerWithEmailAndPassword } = useRegister();
   const singupActionData = useActionData();
+
   useEffect(() => {
     if (singupActionData) {
       const { valid, errors } = validateSignupOrLoginData(

@@ -3,11 +3,11 @@ import { useFirestore } from "../hooks/useFirestore";
 import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
-import toast from "react-hot-toast";
 
 function About() {
   const [project, setProject] = useState(null);
-  const { isPending, deleteDocument, updateDocument } = useFirestore("project");
+  const { isPending, deleteDocument, updateDocument } =
+    useFirestore("projects");
 
   const { id } = useParams();
 

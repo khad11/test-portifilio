@@ -28,14 +28,12 @@ function Login() {
 
   useEffect(() => {
     if (loginActionData) {
-      const { valid, errors } = validateSignupOrLoginData(
-        loginActionData,
-        true
-      );
+      const { valid, errors } = validateSignupOrLoginData(loginActionData);
+      console.log(valid, errors);
 
       if (valid) {
         const { displayName, email, password } = loginActionData;
-        loginWithEmailAndPassword(displayName, email, password);
+        loginWithEmailAndPassword(email, password);
       } else {
         setError(errors);
       }
