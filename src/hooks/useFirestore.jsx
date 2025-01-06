@@ -35,7 +35,6 @@ function useFirestore(collectionName) {
       navigate("/");
     } catch (error) {
       toast.error("Error removing document: ", error);
-    } finally {
     }
   };
 

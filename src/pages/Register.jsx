@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { validateSignupOrLoginData } from "../utils";
 import Button from "../components/Button";
 
+import { useAuthWithGoogle } from "../hooks/useAuthWithGoogle";
+
 // action
 export const action = async ({ request }) => {
   const form = await request.formData();
@@ -18,6 +20,7 @@ export const action = async ({ request }) => {
 };
 
 function Register() {
+  const { authWithGoogle } = useAuthWithGoogle();
   const [error, setError] = useState({
     displayName: "",
     email: "",
@@ -82,7 +85,7 @@ function Register() {
           error={error.confirmPassword && "input-error"}
           errorText={error.confirmPassword}
         />
-        <div className="my-5">
+        <div className="my-5 flex flex-col gap-3">
           {/* {!isPending && (
             <button className="btn btn-success text-white btn-block">
               Register
@@ -96,6 +99,13 @@ function Register() {
           <Button loading={isPending} type="primary">
             Register
           </Button>
+          <button
+            onClick={authWithGoogle}
+            type="button"
+            className="btn btn-secondary btn-block"
+          >
+            Google
+          </button>
         </div>
         <p className="text-center text-x italic opacity-70">
           if you have a accaunt ,{" "}

@@ -13,10 +13,10 @@ export function useLogout() {
   const { user } = useSelector((store) => store.user);
   // dispatch(setIsPending(true));
   const logout = async () => {
-    let ref = doc(db, "users", user.uid);
-    await updateDoc(ref, {
-      online: false,
-    });
+    // let ref = doc(db, "users", user.uid);
+    // await updateDoc(ref, {
+    //   online: false,
+    // });
     signOut(auth)
       .then(() => {
         // Sign-out successful.
