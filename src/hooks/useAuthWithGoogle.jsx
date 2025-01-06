@@ -3,12 +3,12 @@ import { auth, db } from "../firebase/config";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { login } from "../app/features/userSlice";
+import { login, setIsPending } from "../app/features/userSlice";
 import { doc, setDoc } from "firebase/firestore";
 
 export function useAuthWithGoogle() {
   const [isCencel, setIsCencel] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+
   const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
   const authWithGoogle = async () => {
@@ -32,7 +32,7 @@ export function useAuthWithGoogle() {
       const errorMessage = error.message;
       toast.error(errorMessage);
     } finally {
-      setIsPending(false);
+      dispatch(setIsPending(false));
     }
   };
 
