@@ -8,7 +8,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 export function useAuthWithGoogle() {
   const [isCencel, setIsCencel] = useState(false);
-  //   const [isPending, setIsPending] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
   const authWithGoogle = async () => {
