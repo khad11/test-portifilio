@@ -3,7 +3,7 @@ import { auth, db } from "../firebase/config";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { login, setIsPending } from "../app/features/userSlice";
+import { login } from "../app/features/userSlice";
 import { doc, setDoc } from "firebase/firestore";
 
 export function useAuthWithGoogle() {
@@ -12,7 +12,7 @@ export function useAuthWithGoogle() {
   const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
   const authWithGoogle = async () => {
-    dispatch(setIsPending(true));
+    // dispatch(setIsPending(true));
     try {
       const res = await signInWithPopup(auth, provider);
       if (!setIsCencel) {
@@ -32,7 +32,7 @@ export function useAuthWithGoogle() {
       const errorMessage = error.message;
       toast.error(errorMessage);
     } finally {
-      dispatch(setIsPending(false));
+      // dispatch(setIsPending(false));
     }
   };
 
