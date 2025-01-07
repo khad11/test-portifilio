@@ -9,11 +9,15 @@ import { useLogout } from "../hooks/useLogout";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaProjectDiagram } from "react-icons/fa";
+import { useCollection } from "../hooks/useCollection";
 import Button from "./Button";
 
 function UserNavbar() {
   const { logout } = useLogout();
   const { user } = useSelector((store) => store.user);
+  console.log(user);
+  const { documents } = useCollection("users");
+  console.log(documents);
 
   return (
     <div className="bg-gradient-to-b from-slate-800 to-slate-600 min-h-screen py-10 rounded-tr-2xl rounded-br-2xl text-white flex flex-col shadow-lg">
@@ -58,7 +62,7 @@ function UserNavbar() {
           </li>
           <li className="nav-item">
             <NavLink
-              to="/settings"
+              to={`/settings`}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-2 rounded-lg text-lg transition-all duration-500 ${
                   isActive

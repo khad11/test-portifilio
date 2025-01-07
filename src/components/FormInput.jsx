@@ -1,4 +1,12 @@
-const FormInput = ({ type, label, placeholder, name, error, errorText }) => {
+const FormInput = ({
+  type,
+  label,
+  placeholder,
+  name,
+  error,
+  errorText,
+  className,
+}) => {
   return (
     <label className="form-control w-full mb-2">
       <div className="label">
@@ -7,7 +15,7 @@ const FormInput = ({ type, label, placeholder, name, error, errorText }) => {
       <input
         type={type}
         placeholder={placeholder}
-        className={`input input-bordered  w-full ${error} `}
+        className={`input input-bordered   ${error} ${className} `}
         name={name}
       />
       {errorText && (

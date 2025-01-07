@@ -15,7 +15,7 @@ export function useAuthWithGoogle() {
     // dispatch(setIsPending(true));
     try {
       const res = await signInWithPopup(auth, provider);
-      if (!setIsCencel) {
+      if (!isCencel) {
         await setDoc(doc(db, "users", res.user.uid), {
           displayName: res.user.displayName,
           id: res.user.uid,

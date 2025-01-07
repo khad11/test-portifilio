@@ -85,27 +85,17 @@ function Register() {
           error={error.confirmPassword && "input-error"}
           errorText={error.confirmPassword}
         />
-        <div className="my-5 flex flex-col gap-3">
-          {/* {!isPending && (
-            <button className="btn btn-success text-white btn-block">
-              Register
-            </button>
-          )}
-          {isPending && (
-            <button className="btn btn-success text-white btn-block" disabled>
-              Loading...
-            </button>
-          )} */}
+        <div className="my-5 flex flex-col gap-3 ">
           <Button loading={isPending} type="primary">
             Register
           </Button>
-          <button
+          <a
             onClick={authWithGoogle}
             type="button"
             className="btn btn-secondary btn-block"
           >
             Google
-          </button>
+          </a>
         </div>
         <p className="text-center text-x italic opacity-70">
           if you have a accaunt ,{" "}
